@@ -1,12 +1,13 @@
 (function(){
   id = Ti.App.Properties.getString("tisink", "");
   var param, xhr;
-  file = Titanium.Filesystem.getFile("examples/textarea_autodetect.js");
+  file = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory,"examples/textarea_autodetect.js");
+  text = (file.read()).text
   xhr = Titanium.Network.createHTTPClient();
   xhr.open("POST", "http://tisink.nodester.com/");
   xhr.setRequestHeader("content-type", "application/json");
   param = {
-    data: "" + file.read(),
+    data: text,
     file: "textarea_autodetect.js",
     id: id
   };

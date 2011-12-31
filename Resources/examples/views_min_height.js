@@ -1,12 +1,13 @@
 (function(){
   id = Ti.App.Properties.getString("tisink", "");
   var param, xhr;
-  file = Titanium.Filesystem.getFile("examples/views_min_height.js");
+  file = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory,"examples/views_min_height.js");
+  text = (file.read()).text
   xhr = Titanium.Network.createHTTPClient();
   xhr.open("POST", "http://tisink.nodester.com/");
   xhr.setRequestHeader("content-type", "application/json");
   param = {
-    data: "" + file.read(),
+    data: text,
     file: "views_min_height.js",
     id: id
   };

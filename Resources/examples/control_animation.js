@@ -1,12 +1,13 @@
 (function(){
   id = Ti.App.Properties.getString("tisink", "");
   var param, xhr;
-  file = Titanium.Filesystem.getFile("examples/control_animation.js");
+  file = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory,"examples/control_animation.js");
+  text = (file.read()).text
   xhr = Titanium.Network.createHTTPClient();
   xhr.open("POST", "http://tisink.nodester.com/");
   xhr.setRequestHeader("content-type", "application/json");
   param = {
-    data: "" + file.read(),
+    data: text,
     file: "control_animation.js",
     id: id
   };

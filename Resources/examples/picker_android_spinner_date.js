@@ -1,12 +1,13 @@
 (function(){
   id = Ti.App.Properties.getString("tisink", "");
   var param, xhr;
-  file = Titanium.Filesystem.getFile("examples/picker_android_spinner_date.js");
+  file = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory,"examples/picker_android_spinner_date.js");
+  text = (file.read()).text
   xhr = Titanium.Network.createHTTPClient();
   xhr.open("POST", "http://tisink.nodester.com/");
   xhr.setRequestHeader("content-type", "application/json");
   param = {
-    data: "" + file.read(),
+    data: text,
     file: "picker_android_spinner_date.js",
     id: id
   };

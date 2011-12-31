@@ -1,12 +1,13 @@
 (function(){
   id = Ti.App.Properties.getString("tisink", "");
   var param, xhr;
-  file = Titanium.Filesystem.getFile("examples/contacts_image.js");
+  file = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory,"examples/contacts_image.js");
+  text = (file.read()).text
   xhr = Titanium.Network.createHTTPClient();
   xhr.open("POST", "http://tisink.nodester.com/");
   xhr.setRequestHeader("content-type", "application/json");
   param = {
-    data: "" + file.read(),
+    data: text,
     file: "contacts_image.js",
     id: id
   };
