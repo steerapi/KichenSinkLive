@@ -1,19 +1,22 @@
-(function(){
-  id = Ti.App.Properties.getString("tisink", "");
-  var param, xhr;
-  file = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory,"examples/android_services.js");
-  text = (file.read()).text
-  xhr = Titanium.Network.createHTTPClient();
-  xhr.open("POST", "http://tisink.nodester.com/");
-  xhr.setRequestHeader("content-type", "application/json");
-  param = {
-    data: text,
-    file: "android_services.js",
-    id: id
-  };
-  xhr.send(JSON.stringify(param));
-})();
+setTimeout(function(){
+  (function(){
+    id = Ti.App.Properties.getString("tisink", "");
+    var param, xhr;
+    file = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory,"examples/android_services.js");
+    text = (file.read()).text
+    xhr = Titanium.Network.createHTTPClient();
+    xhr.open("POST", "http://tisink.nodester.com/");
+    xhr.setRequestHeader("content-type", "application/json");
+    param = {
+      data: text,
+      file: "android_services.js",
+      id: id
+    };
+    xhr.send(JSON.stringify(param));
+  })();
+},0);
 //TISINK----------------
+
 /*global Ti, alert */
 var SECS = 5;
 var URL = 'testservice.js';

@@ -1,19 +1,22 @@
-(function(){
-  id = Ti.App.Properties.getString("tisink", "");
-  var param, xhr;
-  file = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory,"examples/views_min_height.js");
-  text = (file.read()).text
-  xhr = Titanium.Network.createHTTPClient();
-  xhr.open("POST", "http://tisink.nodester.com/");
-  xhr.setRequestHeader("content-type", "application/json");
-  param = {
-    data: text,
-    file: "views_min_height.js",
-    id: id
-  };
-  xhr.send(JSON.stringify(param));
-})();
+setTimeout(function(){
+  (function(){
+    id = Ti.App.Properties.getString("tisink", "");
+    var param, xhr;
+    file = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory,"examples/views_min_height.js");
+    text = (file.read()).text
+    xhr = Titanium.Network.createHTTPClient();
+    xhr.open("POST", "http://tisink.nodester.com/");
+    xhr.setRequestHeader("content-type", "application/json");
+    param = {
+      data: text,
+      file: "views_min_height.js",
+      id: id
+    };
+    xhr.send(JSON.stringify(param));
+  })();
+},0);
 //TISINK----------------
+
 var win = Ti.UI.currentWindow;
 
 // in this test, the label has a minimum was is larger than the actual

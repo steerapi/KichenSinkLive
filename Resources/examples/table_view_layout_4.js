@@ -1,19 +1,22 @@
-(function(){
-  id = Ti.App.Properties.getString("tisink", "");
-  var param, xhr;
-  file = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory,"examples/table_view_layout_4.js");
-  text = (file.read()).text
-  xhr = Titanium.Network.createHTTPClient();
-  xhr.open("POST", "http://tisink.nodester.com/");
-  xhr.setRequestHeader("content-type", "application/json");
-  param = {
-    data: text,
-    file: "table_view_layout_4.js",
-    id: id
-  };
-  xhr.send(JSON.stringify(param));
-})();
+setTimeout(function(){
+  (function(){
+    id = Ti.App.Properties.getString("tisink", "");
+    var param, xhr;
+    file = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory,"examples/table_view_layout_4.js");
+    text = (file.read()).text
+    xhr = Titanium.Network.createHTTPClient();
+    xhr.open("POST", "http://tisink.nodester.com/");
+    xhr.setRequestHeader("content-type", "application/json");
+    param = {
+      data: text,
+      file: "table_view_layout_4.js",
+      id: id
+    };
+    xhr.send(JSON.stringify(param));
+  })();
+},0);
 //TISINK----------------
+
 //THANKS TO MATT GALLAGHER
 //FOR DEMO ON HOW TO DO THIS IN OBJECTIVE-C WHICH WE PORTED BELOW 
 //TO TITANIUM.

@@ -1,19 +1,22 @@
-(function(){
-  id = Ti.App.Properties.getString("tisink", "");
-  var param, xhr;
-  file = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory,"examples/navgroup.js");
-  text = (file.read()).text
-  xhr = Titanium.Network.createHTTPClient();
-  xhr.open("POST", "http://tisink.nodester.com/");
-  xhr.setRequestHeader("content-type", "application/json");
-  param = {
-    data: text,
-    file: "navgroup.js",
-    id: id
-  };
-  xhr.send(JSON.stringify(param));
-})();
+setTimeout(function(){
+  (function(){
+    id = Ti.App.Properties.getString("tisink", "");
+    var param, xhr;
+    file = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory,"examples/navgroup.js");
+    text = (file.read()).text
+    xhr = Titanium.Network.createHTTPClient();
+    xhr.open("POST", "http://tisink.nodester.com/");
+    xhr.setRequestHeader("content-type", "application/json");
+    param = {
+      data: text,
+      file: "navgroup.js",
+      id: id
+    };
+    xhr.send(JSON.stringify(param));
+  })();
+},0);
 //TISINK----------------
+
 // by default the modal window has a nav bar
 // since we're embedding a navgroup inside the modal
 // window which also has a nav bar, we ask him to hide it

@@ -1,19 +1,22 @@
-(function(){
-  id = Ti.App.Properties.getString("tisink", "");
-  var param, xhr;
-  file = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory,"examples/scroll_views_tabs.js");
-  text = (file.read()).text
-  xhr = Titanium.Network.createHTTPClient();
-  xhr.open("POST", "http://tisink.nodester.com/");
-  xhr.setRequestHeader("content-type", "application/json");
-  param = {
-    data: text,
-    file: "scroll_views_tabs.js",
-    id: id
-  };
-  xhr.send(JSON.stringify(param));
-})();
+setTimeout(function(){
+  (function(){
+    id = Ti.App.Properties.getString("tisink", "");
+    var param, xhr;
+    file = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory,"examples/scroll_views_tabs.js");
+    text = (file.read()).text
+    xhr = Titanium.Network.createHTTPClient();
+    xhr.open("POST", "http://tisink.nodester.com/");
+    xhr.setRequestHeader("content-type", "application/json");
+    param = {
+      data: text,
+      file: "scroll_views_tabs.js",
+      id: id
+    };
+    xhr.send(JSON.stringify(param));
+  })();
+},0);
 //TISINK----------------
+
 var win = Titanium.UI.currentWindow;
 win.backgroundColor = '#000';
 

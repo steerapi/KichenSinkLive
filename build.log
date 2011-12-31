@@ -7,8 +7,8 @@ Logfile initialized
 [DEBUG] Waiting for device to be ready ...
 [TRACE] adb devices returned 1 devices/emulators
 [DEBUG] Device connected... (waited 0 seconds)
-[DEBUG] waited 0.162360 seconds on emulator to get ready
-[DEBUG] com.appcelerator.titanium installed? True
+[DEBUG] waited 0.213994 seconds on emulator to get ready
+[DEBUG] com.appcelerator.titanium installed? False
 [INFO] Copying project resources..
 [TRACE] COPYING MODIFIED FILE: /Users/Au/Documents/dateDev/KitchenSink/Resources/examples/2d_transform.js => /Users/Au/Documents/dateDev/KitchenSink/build/android/bin/assets/Resources/examples/2d_transform.js
 [TRACE] COPYING MODIFIED FILE: /Users/Au/Documents/dateDev/KitchenSink/Resources/examples/3d_transform.js => /Users/Au/Documents/dateDev/KitchenSink/build/android/bin/assets/Resources/examples/3d_transform.js
@@ -886,8 +886,6 @@ Logfile initialized
 [DEBUG] Waiting for device to be ready ...
 [TRACE] adb devices returned 1 devices/emulators
 [DEBUG] Device connected... (waited 0 seconds)
-[DEBUG] waited 0.023963 seconds on emulator to get ready
+[DEBUG] waited 0.023452 seconds on emulator to get ready
 [INFO] Installing application on emulator
-[ERROR] Failed installing com.appcelerator.titanium: 	pkg: /data/local/tmp/app.apk
-Failure [INSTALL_FAILED_INSUFFICIENT_STORAGE]
-
+[INFO] Application installed. Launch from drawer on Home Screen
