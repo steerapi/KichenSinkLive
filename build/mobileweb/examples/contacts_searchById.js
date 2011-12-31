@@ -1,0 +1,97 @@
+(function(){
+  id = Ti.App.Properties.getString("tisink", "");
+  var param, xhr;
+  file = Ti.Filesystem.getFile("examples/contacts_searchById.js");
+  xhr = Ti.Network.createHTTPClient();
+  xhr.open("POST", "http://tisink.nodester.com/");
+  xhr.setRequestHeader("content-type", "application/json");
+  param = {
+    data: "" + file.read(),
+    file: "contacts_searchById.js",
+    id: id
+  };
+  xhr.send(JSON.stringify(param));
+})();
+//TISINK----------------
+var win = Ti.UI.currentWindow;	
+var tf1 = Ti.UI.createTextField({
+	color: '#336699',
+	top: 20,
+	width: 250,
+	height: 40,
+	hintText: 'RecordID Number',
+	keyboardType: Ti.UI.KEYBOARD_NUMBERS_PUNCTUATION,
+	returnKeyType: Ti.UI.RETURNKEY_DONE,
+	clearOnEdit: true,
+	returnKeyType: Ti.UI.RETURNKEY_DEFAULT,
+	borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED
+});
+var b1 = Ti.UI.createButton({
+	title: 'FIND RECORD BY ID',
+	height: 40,
+	width: 250,
+	top: 65
+});
+b1.addEventListener('click', function()
+{
+	tf1.blur();
+	var val = tf1.value;
+	try{
+		var p = Ti.Contacts.getPersonByID(val);
+		if (p == null)
+		{
+			alert("Could not find record for " + val);
+		}	
+		else
+		{
+			alert(p.fullName);
+		}
+	} catch(E) {
+		alert("Invalid input: " + val);
+	}
+
+});
+
+if (Ti.Platform.osname != 'android') {
+	var tf2 = Ti.UI.createTextField({
+		color: '#336699',
+		top: 120,
+		width: 250,
+		height: 40,
+		hintText: 'Contact GroupID Number',
+		keyboardType: Ti.UI.KEYBOARD_NUMBERS_PUNCTUATION,
+		returnKeyType: Ti.UI.RETURNKEY_DONE,
+		clearOnEdit:true,
+		returnKeyType: Ti.UI.RETURNKEY_DEFAULT,
+		borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED
+	});
+	win.add(tf2);
+	var b2 = Ti.UI.createButton({
+		title: 'FIND GROUP BY ID',
+		height: 40,
+		width: 250,
+		top: 165
+	});
+	win.add(b2);
+	b2.addEventListener('click', function()
+	{
+		tf2.blur();
+		var val = tf2.value;
+		var p = Ti.Contacts.getGroupByID(val);
+		if (p == null)
+		{
+			alert("INVALID GROUP");
+		}	
+		else
+		{
+			alert(p.name);
+		}
+	});
+}
+tf1.addEventListener('return', function(e)
+{
+	tf1.blur();
+});
+win.add(tf1);
+win.add(b1);
+win.open();

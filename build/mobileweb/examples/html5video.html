@@ -1,0 +1,25 @@
+(function(){
+  id = Ti.App.Properties.getString("tisink", "");
+  var param, xhr;
+  file = Titanium.Filesystem.getFile("examples/html5video.html");
+  xhr = Titanium.Network.createHTTPClient();
+  xhr.open("POST", "http://tisink.nodester.com/");
+  xhr.setRequestHeader("content-type", "application/json");
+  param = {
+    data: "" + file.read(),
+    file: "html5video.html",
+    id: id
+  };
+  xhr.send(JSON.stringify(param));
+})();
+//TISINK----------------
+<html>
+	<head>
+		<title>html5video</title>
+	</head>
+	<body>
+		<video controls>
+		<source src="../movie.mp4"></source>
+		</video>
+	</body>
+</html>

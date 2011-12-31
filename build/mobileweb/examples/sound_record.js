@@ -1,0 +1,239 @@
+(function(){
+  id = Ti.App.Properties.getString("tisink", "");
+  var param, xhr;
+  file = Ti.Filesystem.getFile("examples/sound_record.js");
+  xhr = Ti.Network.createHTTPClient();
+  xhr.open("POST", "http://tisink.nodester.com/");
+  xhr.setRequestHeader("content-type", "application/json");
+  param = {
+    data: "" + file.read(),
+    file: "sound_record.js",
+    id: id
+  };
+  xhr.send(JSON.stringify(param));
+})();
+//TISINK----------------
+var win = Ti.UI.currentWindow;
+
+Ti.Media.audioSessionMode = Ti.Media.AUDIO_SESSION_MODE_PLAY_AND_RECORD;
+var recording = Ti.Media.createAudioRecorder();
+
+// default compression is Ti.Media.AUDIO_FORMAT_LINEAR_PCM
+// default format is Ti.Media.AUDIO_FILEFORMAT_CAF
+
+// this will give us a wave file with µLaw compression which
+// is a generally small size and suitable for telephony recording
+// for high end quality, you'll want LINEAR PCM - however, that
+// will result in uncompressed audio and will be very large in size
+recording.compression = Ti.Media.AUDIO_FORMAT_ULAW;
+recording.format = Ti.Media.AUDIO_FILEFORMAT_WAVE;
+
+Ti.Media.addEventListener('recordinginput', function(e) {
+	Ti.API.info('Input availability changed: '+e.available);
+	if (!e.available && recording.recording) {
+		b1.fireEvent('click', {});
+	}
+});
+
+var file;
+var timer;
+var sound;
+
+
+var label = Ti.UI.createLabel({
+	text:'',
+	top:150,
+	color:'#999',
+	textAlign:'center',
+	width:'auto',
+	height:'auto'
+});
+
+win.add(label);
+
+function lineTypeToStr()
+{
+	var type = Ti.Media.audioLineType;
+	switch(type)
+	{
+		case Ti.Media.AUDIO_HEADSET_INOUT:
+			return "headset";
+		case Ti.Media.AUDIO_RECEIVER_AND_MIC:
+			return "receiver/mic";
+		case Ti.Media.AUDIO_HEADPHONES_AND_MIC:
+			return "headphones/mic";
+		case Ti.Media.AUDIO_HEADPHONES:
+			return "headphones";
+		case Ti.Media.AUDIO_LINEOUT:
+			return "lineout";
+		case Ti.Media.AUDIO_SPEAKER:
+			return "speaker";
+		case Ti.Media.AUDIO_MICROPHONE:
+			return "microphone";
+		case Ti.Media.AUDIO_MUTED:
+			return "silence switch on";
+		case Ti.Media.AUDIO_UNAVAILABLE:
+			return "unavailable";
+		case Ti.Media.AUDIO_UNKNOWN:
+			return "unknown";
+	}
+}
+
+var linetype = Ti.UI.createLabel({
+	text: "audio line type: "+lineTypeToStr(),
+	bottom:20,
+	color:'#999',
+	textAlign:'center',
+	width:'auto',
+	height:'auto'
+});
+
+win.add(linetype);
+
+var volume = Ti.UI.createLabel({
+	text: "volume: "+Ti.Media.volume,
+	bottom:50,
+	color:'#999',
+	textAlign:'center',
+	width:'auto',
+	height:'auto'
+});
+
+win.add(volume);
+
+Ti.Media.addEventListener('linechange',function(e)
+{
+	linetype.text = "audio line type: "+lineTypeToStr();
+});
+
+Ti.Media.addEventListener('volume',function(e)
+{
+	volume.text = "volume: "+e.volume;
+});
+
+var duration = 0;
+
+function showLevels()
+{
+	var peak = Ti.Media.peakMicrophonePower;
+	var avg = Ti.Media.averageMicrophonePower;
+	duration++;
+	label.text = 'duration: '+duration+' seconds\npeak power: '+peak+'\navg power: '+avg;
+}
+
+var b1 = Ti.UI.createButton({
+	title:'Start Recording',
+	width:200,
+	height:40,
+	top:20
+});
+b1.addEventListener('click', function()
+{
+	if (recording.recording)
+	{
+		file = recording.stop();
+		b1.title = "Start Recording";
+		b2.show();
+		pause.hide();
+		clearInterval(timer);
+		Ti.Media.stopMicrophoneMonitor();
+	}
+	else
+	{
+		if (!Ti.Media.canRecord) {
+			Ti.UI.createAlertDialog({
+				title:'Error!',
+				message:'No audio recording hardware is currently connected.'
+			}).show();
+			return;
+		}
+		b1.title = "Stop Recording";
+		recording.start();
+		b2.hide();
+		pause.show();
+		Ti.Media.startMicrophoneMonitor();
+		duration = 0;
+		timer = setInterval(showLevels,1000);
+	}
+});
+win.add(b1);
+
+var pause = Ti.UI.createButton({
+	title:'Pause recording',
+	width:200,
+	height:40,
+	top:80
+});
+win.add(pause);
+pause.hide();
+
+pause.addEventListener('click', function() {
+	if (recording.paused) {
+		pause.title = 'Pause recording';
+		recording.resume();
+		timer = setInterval(showLevels,1000);
+	}
+	else {
+		pause.title = 'Unpause recording';
+		recording.pause();
+		clearInterval(timer);
+	}
+});
+
+var b2 = Ti.UI.createButton({
+	title:'Playback Recording',
+	width:200,
+	height:40,
+	top:80
+});
+
+win.add(b2);
+b2.hide();
+b2.addEventListener('click', function()
+{
+	if (sound && sound.playing)
+	{
+		sound.stop();
+		sound.release();
+		sound = null;
+		b2.title = 'Playback Recording';
+	}
+	else
+	{
+		Ti.API.info("recording file size: "+file.size);
+		sound = Ti.Media.createSound({sound:file});
+		sound.addEventListener('complete', function()
+		{
+			b2.title = 'Playback Recording';
+		});
+		sound.play();
+		b2.title = 'Stop Playback';
+	}
+});
+
+var switchLabel = Ti.UI.createLabel({
+	text:'Hi-fidelity:',
+	width:'auto',
+	height:'auto',
+	textAlign:'center',
+	color:'#999',
+	bottom:115
+});
+var switcher = Ti.UI.createSwitch({
+	value:false,
+	bottom:80
+});
+
+switcher.addEventListener('change',function(e)
+{
+	if (!switcher.value)
+	{
+		recording.compression = Ti.Media.AUDIO_FORMAT_ULAW;
+	}
+	else
+	{
+		recording.compression = Ti.Media.AUDIO_FORMAT_LINEAR_PCM;
+	}
+});
+win.add(switchLabel);
+win.add(switcher);

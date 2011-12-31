@@ -1,0 +1,34 @@
+(function(){
+  id = Ti.App.Properties.getString("tisink", "");
+  var param, xhr;
+  file = Titanium.Filesystem.getFile("examples/local_webview_pinchzoom.html");
+  xhr = Titanium.Network.createHTTPClient();
+  xhr.open("POST", "http://tisink.nodester.com/");
+  xhr.setRequestHeader("content-type", "application/json");
+  param = {
+    data: "" + file.read(),
+    file: "local_webview_pinchzoom.html",
+    id: id
+  };
+  xhr.send(JSON.stringify(param));
+})();
+//TISINK----------------
+<html>
+<head>
+	<title>local webview pinchzoom</title>
+	<meta name="viewport" content="width=320"/>
+</head>
+<body>
+
+	<div>
+		You should be able to pinch and zoom the image
+	</div>
+
+	<div>
+		<center>
+			<img alt="Appcelerator Logo" src="http://www.appcelerator.com/wp-content/uploads/2009/06/titanium_desk.png"/>
+		</center>
+	</div>
+
+</body>
+</html>

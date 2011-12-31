@@ -1,0 +1,250 @@
+(function(){
+  id = Ti.App.Properties.getString("tisink", "");
+  var param, xhr;
+  file = Ti.Filesystem.getFile("examples/slider_basic.js");
+  xhr = Ti.Network.createHTTPClient();
+  xhr.open("POST", "http://tisink.nodester.com/");
+  xhr.setRequestHeader("content-type", "application/json");
+  param = {
+    data: "" + file.read(),
+    file: "slider_basic.js",
+    id: id
+  };
+  xhr.send(JSON.stringify(param));
+})();
+//TISINK----------------
+var win = Ti.UI.currentWindow;
+
+//
+// BASIC SLIDER
+//
+var basicSliderLabel = Ti.UI.createLabel({
+	text:'Basic Slider - value = 0' ,
+	color:'#999',
+	font:{
+		fontFamily:'Helvetica Neue',
+		fontSize:15
+	},
+	textAlign:'center',
+	top:10,
+	width:300,
+	height:'auto'
+});
+
+var basicSlider = Ti.UI.createSlider({
+	min:0,
+	max:10,
+	value:5,
+	width:100,
+	height:'auto',
+	top:30,
+	selectedThumbImage:'../images/slider_thumb.png',
+	highlightedThumbImage:'../images/chat.png'
+});
+basicSlider.addEventListener('change',function(e)
+{
+	basicSliderLabel.text = 'Basic Slider - value = ' + Math.round(e.value) + ' act val ' + Math.round(basicSlider.value);
+});
+// For #806
+basicSlider.addEventListener('touchstart', function(e)
+{
+	Ti.API.info('Touch started: '+e.value);
+});
+basicSlider.addEventListener('touchend', function(e)
+{
+	Ti.API.info('Touch ended: '+e.value);
+});
+basicSlider.value = 0; // For regression test purposes
+
+//
+// CUSTOM SLIDER
+//
+var customSliderLabel = Ti.UI.createLabel({
+	text:'Custom Slider - value = 25' ,
+	color:'#999',
+	font:{
+		fontFamily:'Helvetica Neue',
+		fontSize:15
+	},
+	textAlign:'center',
+	top:70,
+	width:300,
+	height:'auto'
+});
+
+var customSlider = Ti.UI.createSlider({
+	min:0,
+	max:100,
+	value:25,
+	width:268,
+	height:11,
+	top:90,
+	leftTrackImage:'../images/slider_orangebar.png',
+	rightTrackImage:'../images/slider_lightbar.png',
+	thumbImage:'../images/slider_thumb.png'
+});
+customSlider.addEventListener('change',function(e)
+{
+	customSliderLabel.text = 'Custom Slider - value = ' + e.value;
+});
+
+
+//
+// CHANGE SLIDER
+//
+var changeButton = Ti.UI.createButton({
+	title:'Change Basic Slider',
+	height:40,
+	width:200,
+	top:120
+});
+changeButton.addEventListener('click', function()
+{
+	basicSlider.value = 2;
+	basicSlider.width = 268;
+	basicSlider.height = (Ti.Platform.osname == 'android') ? 50 : 11;
+	basicSlider.leftTrackImage = '../images/slider_orangebar.png';
+	basicSlider.rightTrackImage = '../images/slider_lightbar.png';
+	basicSlider.thumbImage = '../images/slider_thumb.png';
+	basicSlider.highlightedThumbImage = '../images/slider_thumb.png';
+});
+
+//
+// TOGGLE SLIDER VISIBILITY
+//
+var toggleButton = Ti.UI.createButton({
+	title:'Hide/Show Slider',
+	height:40,
+	width:200,
+	top:170
+});
+
+var visible = true;
+toggleButton.addEventListener('click', function()
+{
+	if (visible)
+	{
+		basicSlider.hide();
+		customSlider.hide();
+		visible=false;
+	}
+	else
+	{
+		basicSlider.show();
+		customSlider.show();
+		visible=true;
+	}
+
+});
+
+
+//
+// SLIDER NAVBAR
+//
+var navbarButton = Ti.UI.createButton({
+	title:'Toggle Slider in Navbar',
+	height:40,
+	width:200,
+	top:220
+});
+var inNavbar = false;
+navbarButton.addEventListener('click', function()
+{
+	if (!inNavbar)
+	{
+		var navbarSlider = Ti.UI.createSlider({
+			min:0,
+			max:10,
+			value:5,
+			width:100
+		});
+		win.setRightNavButton(navbarSlider);
+		inNavbar = true;
+	}
+	else
+	{
+		win.rightNavButton = null;
+		inNavbar = false;
+	}
+});
+
+//
+// SLIDER TOOLBAR
+//
+var toolbarButton = Ti.UI.createButton({
+	title:'Toggle Slider in Toolbar',
+	height:40,
+	width:200,
+	top:270
+
+});
+var inToolbar = false;
+toolbarButton.addEventListener('click', function()
+{
+	if (!inToolbar)
+	{
+		var toolbarSlider = Ti.UI.createSlider({
+			min:0,
+			max:10,
+			value:5,
+			width:200
+		});
+		win.setToolbar([toolbarSlider],{animated:true});
+		inToolbar = true;
+	}
+	else
+	{
+		win.setToolbar(null,{animated:true});
+		inToolbar = false;
+	}
+});
+
+//
+// SLIDER TO TITLE CONTROL
+//
+var titleButton = Ti.UI.createButton({
+	title:'Toggle Slider in Title',
+	height:40,
+	width:200,
+	top:320
+});
+
+
+var inTitle = false;
+titleButton.addEventListener('click', function()
+{
+	if (inTitle)
+	{
+		win.titleControl = null;
+		win.title = 'Slider';
+		inTitle=false;
+	}
+	else
+	{
+		var titleSlider = Ti.UI.createSlider({
+			min:0,
+			max:10,
+			value:5,
+			width:80,
+			height:'auto'
+		});
+		win.titleControl = titleSlider;
+		inTitle=true;
+	}
+});
+
+win.add(basicSliderLabel);
+win.add(basicSlider);
+win.add(toggleButton);
+Ti.API.info('platform = ' + Ti.Platform.osname);
+if (Ti.Platform.osname == 'iphone' || Ti.Platform.osname == 'ipad')
+{
+	win.add(navbarButton);
+	win.add(toolbarButton);
+	win.add(titleButton);
+	win.add(customSliderLabel);
+	win.add(customSlider);
+}
+win.add(changeButton);
+
+;
