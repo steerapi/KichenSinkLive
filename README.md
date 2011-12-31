@@ -4,7 +4,7 @@ Live Titanium KitchenSink Source
 ### Installation
 Install and run this app, put in :id and go to 
 
-    http://tisink.nodester.com/:id
+    http://tisink.nodester.com/:id?type=[coffee|js]
 
 to see your live source from titanium kitchen sink. Then you can copy it to your project.
 
