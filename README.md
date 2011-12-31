@@ -1,4 +1,13 @@
-<img src="http://www.appcelerator.com/wp-content/themes/app/images/ti-logo.png"> Appcelerator Titanium Mobile  
+Live Titanium KitchenSink Source
+Install and run this app, put in :id and go to 
+
+    http://tisink.nodester.com/:id
+
+to see your live source from titanium kitchen sink. Then you can copy it to your project.
+
+============================
+
+Appcelerator Titanium Mobile  
 ============================
 
 Welcome to the Appcelerator Titanium Mobile open source project.  Titanium provides
