@@ -1,3 +1,18 @@
+(function(){
+  id = Ti.App.Properties.getString("tisink", "");
+  var param, xhr;
+  file = Titanium.Filesystem.getFile("examples/search_case_insensitive.js");
+  xhr = Titanium.Network.createHTTPClient();
+  xhr.open("POST", "http://tisink.nodester.com/");
+  xhr.setRequestHeader("content-type", "application/json");
+  param = {
+    data: "" + file.read(),
+    file: "search_case_insensitive.js",
+    id: id
+  };
+  xhr.send(JSON.stringify(param));
+})();
+//TISINK----------------
 var win = Ti.UI.currentWindow;
 
 var l = Ti.UI.createLabel({

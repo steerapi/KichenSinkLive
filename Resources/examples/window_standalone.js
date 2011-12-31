@@ -1,3 +1,18 @@
+(function(){
+  id = Ti.App.Properties.getString("tisink", "");
+  var param, xhr;
+  file = Titanium.Filesystem.getFile("examples/window_standalone.js");
+  xhr = Titanium.Network.createHTTPClient();
+  xhr.open("POST", "http://tisink.nodester.com/");
+  xhr.setRequestHeader("content-type", "application/json");
+  param = {
+    data: "" + file.read(),
+    file: "window_standalone.js",
+    id: id
+  };
+  xhr.send(JSON.stringify(param));
+})();
+//TISINK----------------
 //
 //  When you open windows outside of tab groups, they are appear on top of either
 //  the current window or the current tab group.  These examples show you different ways

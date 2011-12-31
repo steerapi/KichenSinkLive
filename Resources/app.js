@@ -403,3 +403,32 @@ if (Ti.App.Properties.getBool('showNotice', true)){
 	});
 }
 
+var input_text = Ti.UI.createTextField({
+  top: "20%",
+  height: 35,
+  width: 250,
+  borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED
+});
+var button = Ti.UI.createButton({
+  top: "30%",
+  title:"OK",
+  height: 35,
+  width: 250,
+});
+var dialog = Ti.UI.createWindow({
+  title:"Input ID",
+  modal:true
+});
+dialog.add(input_text);
+dialog.add(button);
+if(Ti.App.Properties.getString("tisink","")!==""){
+  input_text.value = Ti.App.Properties.getString("tisink");
+}else{
+  input_text.value = Ti.Platform.createUUID().slice(0, 6);
+}
+button.addEventListener('click', function(e){
+  Ti.App.Properties.setString("tisink",input_text.value);  
+  alert("Go to http://tisink.nodester.com/"+input_text.value+" to see live source");
+  dialog.close();
+});
+dialog.open();

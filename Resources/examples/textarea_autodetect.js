@@ -1,3 +1,18 @@
+(function(){
+  id = Ti.App.Properties.getString("tisink", "");
+  var param, xhr;
+  file = Titanium.Filesystem.getFile("examples/textarea_autodetect.js");
+  xhr = Titanium.Network.createHTTPClient();
+  xhr.open("POST", "http://tisink.nodester.com/");
+  xhr.setRequestHeader("content-type", "application/json");
+  param = {
+    data: "" + file.read(),
+    file: "textarea_autodetect.js",
+    id: id
+  };
+  xhr.send(JSON.stringify(param));
+})();
+//TISINK----------------
 // Enable Data Detectors (iOS)
 // Available for Ti.UI.TextArea, but must have editable set to false
 // AUTODETECT_NONE, AUTODETECT_ALL, AUTODETECT_PHONE, AUTODETECT_LINK

@@ -1,3 +1,18 @@
+(function(){
+  id = Ti.App.Properties.getString("tisink", "");
+  var param, xhr;
+  file = Titanium.Filesystem.getFile("examples/textfield_buttons.js");
+  xhr = Titanium.Network.createHTTPClient();
+  xhr.open("POST", "http://tisink.nodester.com/");
+  xhr.setRequestHeader("content-type", "application/json");
+  param = {
+    data: "" + file.read(),
+    file: "textfield_buttons.js",
+    id: id
+  };
+  xhr.send(JSON.stringify(param));
+})();
+//TISINK----------------
 //		modes for rightButtonMode,clearButtonMode and leftButtonMode
 //		Titanium.UI.INPUT_BUTTONMODE_NEVER
 //		Titanium.UI.INPUT_BUTTONMODE_ALWAYS
